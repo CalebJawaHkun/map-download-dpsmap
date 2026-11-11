@@ -1,10 +1,13 @@
 # map-download-dpsmap
 Intern Map Download Development
 
-Contributor Names
+Contributor Name
 
 1. Caleb Jawa Hkun
 DPS Project Group.
+
+2. Theint Theint Thu
+Learning as intern at DPS map.
 
 4. kyaw soe min ;;
 
