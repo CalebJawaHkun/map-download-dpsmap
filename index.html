@@ -3,15 +3,509 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Web Page</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head> 
-  <body>
-    <header>
-      <h1> Group A will write header. </h1>
-    </header>
+    <meta name="theme-color" content="#08182d" />
+    <title>DPS Map Footer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    <footer>
-      <h1> Group B will write footer. </h1>
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        color: #172033;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        font-size: 15px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin-inline: auto;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .logo img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+      }
+
+      .logo-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+      }
+
+      .logo-text strong {
+        color: #fff;
+        font-size: 1.15rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+
+      .logo-text small {
+        color: #9fb0c7;
+        font-size: 0.76rem;
+        font-weight: 500;
+      }
+
+      .site-footer {
+        width: 100%;
+        margin-top: auto;
+        padding: 58px 0 24px;
+        background: #08182d;
+        color: #b9c6d8;
+        font-size: 0.9rem;
+      }
+
+      .footer-brand-row {
+        padding-bottom: 24px;
+        margin-bottom: 32px;
+        border-bottom: 1px solid #25364d;
+      }
+
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 440px;
+      }
+
+      .footer-brand p {
+        color: #b9c6d8;
+        font-size: 0.86rem;
+        line-height: 1.55;
+      }
+
+      .footer-links-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+      }
+
+      .footer-side {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 40px 36px;
+        min-width: 0;
+        padding-block: 6px;
+      }
+
+      .footer-side-left {
+        padding-right: 48px;
+      }
+
+      .footer-side-right {
+        padding-left: 48px;
+        border-left: 1px solid #40526a;
+      }
+
+      .footer-column h2,
+      .footer-contact-card h2 {
+        position: relative;
+        padding-bottom: 11px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        color: #fff;
+        font-size: 0.92rem;
+        font-weight: 700;
+        line-height: 1.4;
+      }
+
+      .footer-column h2::after,
+      .footer-contact-card h2::after {
+        position: absolute;
+        right: 0;
+        bottom: -1px;
+        left: 0;
+        width: 38px;
+        height: 2px;
+        background: #3b82f6;
+        content: "";
+      }
+
+      .footer-column ul {
+        list-style: none;
+      }
+
+      .footer-column li {
+        margin-bottom: 8px;
+        line-height: 1.55;
+      }
+
+      .footer-column a {
+        display: inline-block;
+        color: #b9c6d8;
+        font-size: 0.84rem;
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+
+      .footer-column a:hover,
+      .footer-column a:focus-visible {
+        color: #fff;
+        transform: translateX(3px);
+      }
+
+      .footer-contact-card {
+        grid-column: 1 / -1;
+        padding: 18px 20px;
+        border: 1px solid #2c3d52;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.025);
+      }
+
+      .footer-contact-card address {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 18px;
+        color: #b9c6d8;
+        font-size: 0.84rem;
+        font-style: normal;
+      }
+
+      .footer-contact-card address span {
+        grid-column: 1 / -1;
+      }
+
+      .footer-contact-card address a,
+      .footer-bottom a {
+        color: #8a99ad;
+        transition: color 0.2s ease;
+      }
+
+      .footer-contact-card address a {
+        color: #b9c6d8;
+      }
+
+      .footer-contact-card address a:hover,
+      .footer-bottom a:hover {
+        color: #fff;
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-top: 36px;
+        padding-top: 18px;
+        border-top: 1px solid #25364d;
+        color: #8a99ad;
+        font-size: 0.78rem;
+      }
+
+      .footer-legal {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-shrink: 0;
+      }
+
+      .viber-float {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 10;
+        display: flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 50px;
+        background: #7360f2;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        transition: transform 0.25s ease, background 0.25s ease;
+      }
+
+      .viber-float:hover {
+        transform: translateY(-3px);
+        background: #6654e8;
+      }
+
+      .viber-float:focus-visible {
+        outline: 3px solid rgba(115, 96, 242, 0.5);
+        outline-offset: 4px;
+      }
+
+      .viber-float svg {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+
+      @media (max-width: 1060px) {
+        .footer-links-grid {
+          grid-template-columns: 1fr;
+          gap: 26px;
+        }
+
+        .footer-side-left {
+          padding-right: 0;
+        }
+
+        .footer-side-right {
+          padding-top: 30px;
+          padding-left: 0;
+          border-top: 1px solid #40526a;
+          border-left: 0;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .footer-side {
+          grid-template-columns: 1fr 1fr;
+          gap: 26px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .viber-float {
+          right: 14px;
+          bottom: 14px;
+          width: 48px;
+          height: 48px;
+          min-height: 48px;
+          gap: 0;
+          padding: 0;
+          border-radius: 50%;
+        }
+
+        .viber-float-text {
+          display: none;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .footer-side {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .footer-contact-card address {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-contact-card address span {
+          grid-column: auto;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .footer-legal {
+          flex-wrap: wrap;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <footer class="site-footer">
+      <div class="container footer-brand-row">
+        <div class="footer-brand">
+          <a
+            href="https://dpsmap.com/"
+            class="logo"
+            aria-label="DPS Map home"
+          >
+            <img
+              src="https://dpsmap.com/assets/logo-DYT2u1Kn.png"
+              alt="DPS Map logo"
+            />
+            <span class="logo-text">
+              <strong>DPS Map</strong>
+              <small>Precision Cartography</small>
+            </span>
+          </a>
+          <p>
+            Myanmar mapping, GIS, address data, field surveying, design and
+            printing since 1995.
+          </p>
+        </div>
+      </div>
+
+      <div class="container footer-links-grid">
+        <div class="footer-side footer-side-left">
+          <section class="footer-column" aria-labelledby="footer-main-pages">
+            <h2 id="footer-main-pages">Main Pages</h2>
+            <ul>
+              <li><a href="https://dpsmap.com/">Home</a></li>
+              <li><a href="https://dpsmap.com/about-us/">About Us</a></li>
+              <li><a href="https://dpsmap.com/gis/">GIS Services</a></li>
+              <li><a href="https://dpsmap.com/industrial/">Industrial Zones</a></li>
+              <li><a href="https://dpsmap.com/valuedclients/">Valued Clients</a></li>
+              <li><a href="https://dpsmap.com/map-download/">Downloads</a></li>
+              <li><a href="https://dpsmap.com/products/">Products</a></li>
+              <li><a href="https://dpsmap.com/contact/">Contact Us</a></li>
+            </ul>
+          </section>
+
+          <section class="footer-column" aria-labelledby="footer-myanmar-maps">
+            <h2 id="footer-myanmar-maps">Myanmar &amp; Major Map Pages</h2>
+            <ul>
+              <li><a href="https://dpsmap.com/myanmar/">Myanmar</a></li>
+              <li><a href="https://dpsmap.com/yangon/">Yangon</a></li>
+              <li><a href="https://dpsmap.com/mandalay/">Mandalay</a></li>
+              <li><a href="https://dpsmap.com/naypyitaw/">Naypyitaw</a></li>
+              <li><a href="https://dpsmap.com/districts/">Districts</a></li>
+              <li><a href="https://dpsmap.com/administrative-boundaries/">Administrative Boundaries</a></li>
+              <li><a href="https://dpsmap.com/shan/">Shan</a></li>
+              <li><a href="https://dpsmap.com/kachin/">Kachin</a></li>
+              <li><a href="https://dpsmap.com/kayah/">Kayah</a></li>
+              <li><a href="https://dpsmap.com/rakhine/">Rakhine</a></li>
+              <li><a href="https://dpsmap.com/chin/">Chin</a></li>
+              <li><a href="https://dpsmap.com/mon/">Mon</a></li>
+              <li><a href="https://dpsmap.com/bago/">Bago</a></li>
+              <li><a href="https://dpsmap.com/sagaing/">Sagaing</a></li>
+              <li><a href="https://dpsmap.com/magway/">Magway</a></li>
+              <li><a href="https://dpsmap.com/ayeyarwaddy/">Ayeyarwaddy</a></li>
+            </ul>
+          </section>
+
+          <section class="footer-column" aria-labelledby="footer-popular-city">
+            <h2 id="footer-popular-city">Popular City &amp; Tourist Maps</h2>
+            <ul>
+              <li><a href="https://dpsmap.com/taunggyi/">Taunggyi</a></li>
+              <li><a href="https://dpsmap.com/pyinoolwin/">Pyin Oo Lwin</a></li>
+              <li><a href="https://dpsmap.com/bagan/">Bagan</a></li>
+              <li><a href="https://dpsmap.com/inlay/">Inle</a></li>
+              <li><a href="https://dpsmap.com/amarapura/">Amarapura</a></li>
+              <li><a href="https://dpsmap.com/mawlamying/">Mawlamyine</a></li>
+              <li><a href="https://dpsmap.com/mrauku/">Mrauk U</a></li>
+              <li><a href="https://dpsmap.com/sittwe/">Sittwe</a></li>
+              <li><a href="https://dpsmap.com/kyaiktiyo/">Kyaiktiyo</a></li>
+              <li><a href="https://dpsmap.com/touristmap/">Tourist Map</a></li>
+            </ul>
+          </section>
+
+          <section class="footer-column" aria-labelledby="footer-gis-resources">
+            <h2 id="footer-gis-resources">Map &amp; GIS Resources</h2>
+            <ul>
+              <li><a href="https://dpsmap.com/housenumbermap/">House Number Map</a></li>
+              <li><a href="https://dpsmap.com/yangonbusservice/">Yangon Bus Service</a></li>
+              <li><a href="https://dpsmap.com/mapbox-busstop/">Bus Stop Map</a></li>
+              <li><a href="https://dpsmap.com/populationmap/">Population Map</a></li>
+              <li><a href="https://dpsmap.com/mapdir/">Map Directory</a></li>
+              <li><a href="https://dpsmap.com/carto/">Carto Map</a></li>
+              <li><a href="https://dpsmap.com/permittedarea/">Permitted Area</a></li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="footer-side footer-side-right">
+          <section class="footer-column" aria-labelledby="footer-services">
+            <h2 id="footer-services">Services</h2>
+            <ul>
+              <li><a href="https://dpsmap.com/gis/">GIS Services</a></li>
+              <li><a href="https://dpsmap.com/printing-services/">Printing Services</a></li>
+              <li><a href="https://dpsmap.com/mapplotting/">Map Plotting</a></li>
+              <li><a href="https://dpsmap.com/gps/">GPS</a></li>
+              <li><a href="https://dpsmap.com/tracking/">Tracking</a></li>
+              <li><a href="https://dpsmap.com/website-services/">Website Services</a></li>
+              <li><a href="https://dpsmap.com/form105/">Form 105</a></li>
+            </ul>
+          </section>
+
+          <section class="footer-column" aria-labelledby="footer-products">
+            <h2 id="footer-products">Products &amp; Downloads</h2>
+            <ul>
+              <li><a href="https://dpsmap.com/products/">All Products</a></li>
+              <li><a href="https://dpsmap.com/map-download/">Map Download</a></li>
+              <li><a href="https://dpsmap.com/onlinemapshop/">Online Map Shop</a></li>
+              <li><a href="https://dpsmap.com/map-soft-copy/">Map Soft Copy</a></li>
+              <li><a href="https://dpsmap.com/shop/">Shop</a></li>
+            </ul>
+          </section>
+
+          <section class="footer-column" aria-labelledby="footer-company">
+            <h2 id="footer-company">Company</h2>
+            <ul>
+              <li><a href="https://dpsmap.com/about-us/">About Us</a></li>
+              <li><a href="https://dpsmap.com/valuedclients/">Valued Clients</a></li>
+              <li><a href="https://dpsmap.com/contact/">Contact Us</a></li>
+              <li><a href="https://dpsmap.com/jobs/">Jobs</a></li>
+              <li><a href="https://dpsmap.com/wearehiring/">We Are Hiring</a></li>
+              <li><a href="https://dpsmap.com/privacy-and-policy/">Privacy Policy</a></li>
+              <li><a href="https://dpsmap.com/termsandconditions">Terms &amp; Conditions</a></li>
+            </ul>
+          </section>
+
+          <section class="footer-contact-card" aria-labelledby="footer-contact">
+            <h2 id="footer-contact">Contact DPS Map</h2>
+            <address>
+              <span>Rm: 307, Yae Kyaw Complex, Pazundaung Township, Yangon</span>
+              <a href="tel:+959774204020">+95 (09) 774 204 020</a>
+              <a href="tel:+959775204020">+95 (09) 775 204 020</a>
+              <a href="mailto:dm@dpsmap.com">dm@dpsmap.com</a>
+            </address>
+          </section>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <span>
+          © 2026 DPS Map. All rights reserved. Developed by Min Khant Paing.
+          Last Modified: 21st Sept 2026 by Caleb Jawa Hkun. Updated on 5th Nov
+          2026 by Arr Mann.
+        </span>
+        <div class="footer-legal">
+          <a href="https://dpsmap.com/termsandconditions">Terms &amp; Conditions</a>
+          <a href="https://dpsmap.com/pages/privacy-and-policy/">Privacy Policy</a>
+        </div>
+      </div>
     </footer>
+
+    <a
+      class="viber-float"
+      href="viber://chat?number=%2B959775204020"
+      aria-label="Contact DPS on Viber"
+    >
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M7.2 3.5 9.5 3l2 4.2-1.6 1.7a14 14 0 0 0 5.2 5.2l1.7-1.6 4.2 2-.5 2.3a3 3 0 0 1-3.3 2.3C10 18.1 5.9 14 4.9 6.8a3 3 0 0 1 2.3-3.3Z"
+          fill="currentColor"
+        />
+        <path
+          d="M14.4 4.4a6 6 0 0 1 5.2 5.2M14.6 7.3a3 3 0 0 1 2.1 2.1"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+      </svg>
+      <span class="viber-float-text">Contact DPS</span>
+    </a>
+  </body>
 </html>
