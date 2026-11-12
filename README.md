@@ -8,7 +8,7 @@ DPS Project Group.
 2. Theint Theint Thu
 Learning as intern at DPS map.
 
-3.Hsu Pan Htwar
+3. Hsu Pan Htwar
 Learning as Intern at DPS Map.
 
 4. kyaw soe min ;;
