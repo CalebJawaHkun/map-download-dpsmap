@@ -737,7 +737,7 @@
       }
 
       .wf-main {
-        width: min(100% - 24px, 430px);
+        width: min(100% - 24px, 480px);
         margin-inline: auto;
         padding-block: 16px 40px;
         display: flex;
@@ -956,6 +956,8 @@
 
       .wf-segmented {
         display: inline-flex;
+        align-self: flex-start;
+        width: fit-content;
         align-items: stretch;
         border: 1.5px solid #000;
         border-radius: 999px;
@@ -1127,8 +1129,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        min-block-size: 44px;
-        padding: 6px 4px;
+        min-block-size: 62px;
+        padding: 10px 6px;
         border: 1.5px solid #000;
         border-radius: 10px;
         background: #fff;
@@ -1219,7 +1221,7 @@
         inset-block-end: 0;
         inset-inline: 0;
         z-index: 200;
-        width: min(100%, 430px);
+        width: min(100%, 480px);
         max-block-size: 90dvh;
         margin-inline: auto;
         display: flex;
@@ -1265,6 +1267,26 @@
         align-items: center;
         justify-content: space-between;
         gap: 8px;
+      }
+
+      .wf-drawer-bar--viewer {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: center;
+        gap: 8px;
+      }
+
+      .wf-drawer-bar--viewer .wf-map-pill {
+        justify-self: start;
+        max-inline-size: 100%;
+      }
+
+      .wf-drawer-bar--viewer .wf-drawer-chevron-btn {
+        justify-self: center;
+      }
+
+      .wf-drawer-bar--viewer #viewer-close-btn {
+        justify-self: end;
       }
 
       .wf-map-pill {
@@ -1383,18 +1405,28 @@
 
       .wf-preview-canvas {
         width: 100%;
-        height: min(46dvh, 320px);
+        height: clamp(300px, 50dvh, 620px);
         border-radius: 12px;
         background: #fff;
         overflow: auto;
         display: grid;
         place-items: center;
-        padding: 8px;
+        padding: 10px;
       }
 
-      .wf-preview-canvas img {
+      .wf-preview-canvas[data-zoomed="false"] img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .wf-preview-canvas[data-zoomed="true"] img {
         display: block;
         max-width: none;
+        max-height: none;
         width: calc(var(--zoom, 1) * 100%);
         height: auto;
         transform-origin: center;
@@ -2400,7 +2432,7 @@
     >
       <!-- View 1: Map Image Viewer (Opened & Closed/Minimized) -->
       <div id="drawer-viewer-view">
-        <div class="wf-drawer-bar">
+        <div class="wf-drawer-bar wf-drawer-bar--viewer">
           <span id="viewer-map-pill" class="wf-map-pill">Yangon Map</span>
           <button
             id="viewer-toggle-btn"
@@ -2503,6 +2535,7 @@
           <div
             id="viewer-canvas"
             class="wf-preview-canvas"
+            data-zoomed="false"
             role="region"
             tabindex="0"
             aria-label="Map preview image"
@@ -3328,6 +3361,7 @@
             );
           });
           els.viewerCanvas.style.setProperty("--zoom", String(state.zoom));
+          els.viewerCanvas.dataset.zoomed = String(state.zoom > 1);
           els.zoomResetBtn.textContent = `${Math.round(state.zoom * 100)}%`;
         }
 

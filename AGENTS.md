@@ -4,11 +4,11 @@ Guidance for AI coding agents and contributors working in `map-download-dpsmap` 
 
 ## 1. Status Tracking Workflow (Mandatory)
 
-1. **Read `STATUS.md` first** before starting any task to align with the active phase, open checklist items, and locked design decisions.
-2. **Update `STATUS.md` automatically** when completing a feature, fix, or milestone:
-   - Update item states (`[TODO]`, `[IN_PROGRESS]`, `[DONE]`) in the checklist.
+1. **Read `STATUS.md` first** before starting any task to align with the current phase, recent completed changes, and locked design decisions.
+2. **Record every completion in `STATUS.md`** by following `.agents/skills/status-tracking/SKILL.md`:
+   - `STATUS.md` tracks **completed work only**—never add checklists (`- [ ]` / `- [x]`) or future TODO lists there.
+   - Log each completed task as an entry under `### Uncommitted (since <HEAD>)` listing all **Added**, **Modified**, and **Deleted** items until the next commit, rolling prior uncommitted groups into `### Commit <hash> — <subject> (<date>)` when `HEAD` advances.
    - Add any newly agreed product/UX decisions to **Locked Design Decisions**.
-   - Prepend a concise entry (date, author/agent, summary, files touched) to the **Change Log**.
 3. **Keep `AGENTS.md` lean:** Record evolving progress and changelogs in `STATUS.md`, never here.
 
 ## 2. Project Phases & Visual Scope
