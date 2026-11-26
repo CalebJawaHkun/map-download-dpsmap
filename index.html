@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="text-scale" content="scale" />
     <meta name="theme-color" content="#08182d" />
     <meta
       name="description"
-      content="A responsive recreation of the DPS Map announcement bar and primary navigation."
+      content="Browse and download Myanmar region, district, township, and city maps from DPS Map."
     />
-    <title>DPS Map Header & Footer</title>
+    <title>DPS Map — Map Downloads</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -41,7 +42,7 @@
 
       body {
         min-height: 100vh;
-        min-width: 320px;
+        min-width: 0;
         display: flex;
         flex-direction: column;
         background: #fff;
@@ -719,10 +720,869 @@
           transition-duration: 0.01ms !important;
         }
       }
+
+      /* =========================================================
+         Phase 1 — B&W Mobile-First Wireframe (<main> & Drawer)
+         ========================================================= */
+      html:has(body.has-drawer-active) {
+        scroll-padding-bottom: calc(9.5rem + env(safe-area-inset-bottom, 0px));
+      }
+
+      body {
+        overflow-wrap: break-word;
+      }
+
+      body.has-drawer-active .viber-float {
+        display: none;
+      }
+
+      .wf-main {
+        width: min(100% - 24px, 430px);
+        margin-inline: auto;
+        padding-block: 16px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        color: #000;
+        background: #fff;
+      }
+
+      body.has-drawer-collapsed .wf-main {
+        padding-block-end: calc(10rem + env(safe-area-inset-bottom, 0px));
+      }
+
+      .wf-main :where(button, input, select, a, [tabindex]):focus-visible {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+      }
+
+      .wf-hero {
+        border: 2px solid #000;
+        border-radius: 14px;
+        padding: 20px 16px;
+        text-align: center;
+        background: #fff;
+      }
+
+      .wf-hero h1 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        line-height: 1.25;
+        text-wrap: balance;
+        margin-bottom: 8px;
+      }
+
+      .wf-hero p {
+        font-size: 0.84rem;
+        line-height: 1.5;
+        color: #111;
+        text-wrap: pretty;
+        max-width: 34ch;
+        margin-inline: auto;
+      }
+
+      .wf-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .wf-section-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.3;
+        text-wrap: balance;
+      }
+
+      .wf-popular-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .wf-popular-card {
+        display: flex;
+        flex-direction: column;
+        min-block-size: 44px;
+        border: 1.5px solid #000;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+        color: #000;
+        cursor: pointer;
+        text-align: center;
+        padding: 0;
+        transition: transform 0.15s ease;
+      }
+
+      .wf-popular-card:active {
+        transform: scale(0.98);
+      }
+
+      .wf-popular-thumb {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        background: #f5f5f5;
+        overflow: hidden;
+      }
+
+      .wf-popular-thumb img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .wf-popular-name {
+        width: 100%;
+        padding: 6px 4px;
+        background: #000;
+        color: #fff;
+        font-size: 0.72rem;
+        font-weight: 600;
+        line-height: 1.25;
+        overflow-wrap: break-word;
+      }
+
+      .wf-search-form {
+        display: flex;
+        align-items: center;
+        border: 1.5px solid #000;
+        border-radius: 999px;
+        background: #fff;
+        min-block-size: 44px;
+        padding-inline: 14px 4px;
+      }
+
+      .wf-search-form:focus-within {
+        outline: 2px solid #000;
+        outline-offset: 2px;
+      }
+
+      .wf-search-input {
+        flex: 1 1 auto;
+        min-inline-size: 0;
+        border: 0;
+        background: transparent;
+        color: #000;
+        font-size: max(1rem, 1em);
+        line-height: 1.4;
+        padding-block: 8px;
+      }
+
+      .wf-search-input:focus {
+        outline: none;
+      }
+
+      .wf-search-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-inline-size: 44px;
+        min-block-size: 44px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: #000;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .wf-search-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .wf-search-results {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px;
+        border: 1.5px solid #000;
+        border-radius: 12px;
+        background: #fff;
+      }
+
+      .wf-search-results[hidden] {
+        display: none;
+      }
+
+      .wf-search-results-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .wf-clear-btn {
+        min-block-size: 36px;
+        padding: 4px 10px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        background: #fff;
+        color: #000;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .wf-clear-btn::after {
+        content: "";
+        position: absolute;
+        inset: -4px 0;
+      }
+
+      .wf-myanmar-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .wf-lang-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .wf-lang-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .wf-segmented {
+        display: inline-flex;
+        align-items: stretch;
+        border: 1.5px solid #000;
+        border-radius: 999px;
+        padding: 2px;
+        background: #fff;
+        gap: 2px;
+        max-inline-size: 100%;
+      }
+
+      .wf-segmented-scroll {
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .wf-seg-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-block-size: 36px;
+        padding: 4px 12px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: #000;
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .wf-seg-btn::after {
+        content: "";
+        position: absolute;
+        inset: -4px 0;
+      }
+
+      .wf-seg-btn[aria-pressed="true"],
+      .wf-seg-btn[aria-selected="true"] {
+        background: #000;
+        color: #fff;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .wf-myanmar-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+        border: 1.5px solid #000;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+        color: #000;
+        cursor: pointer;
+        text-align: start;
+      }
+
+      .wf-myanmar-frame {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        background: #f5f5f5;
+        overflow: hidden;
+      }
+
+      .wf-myanmar-frame img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: #fff;
+      }
+
+      .wf-myanmar-caption {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px 12px;
+        border-top: 1.5px solid #000;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .wf-disclosure-heading {
+        margin: 0;
+      }
+
+      .wf-disclosure-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-block-size: 44px;
+        padding: 6px 0;
+        border: 0;
+        background: transparent;
+        color: #000;
+        font-size: 0.92rem;
+        font-weight: 700;
+        font-style: italic;
+        text-align: start;
+        cursor: pointer;
+      }
+
+      .wf-disclosure-btn svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+      }
+
+      .wf-disclosure-btn[aria-expanded="false"] svg {
+        transform: rotate(-90deg);
+      }
+
+      .wf-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .wf-panel[hidden] {
+        display: none;
+      }
+
+      .wf-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .wf-filter-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        max-inline-size: 100%;
+      }
+
+      .wf-filter-wrap label {
+        font-size: 0.74rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .wf-select {
+        min-block-size: 44px;
+        max-inline-size: 100%;
+        padding: 6px 10px;
+        border: 1.5px solid #000;
+        border-radius: 999px;
+        background: #fff;
+        color: #000;
+        font-size: max(1rem, 1em);
+        line-height: 1.3;
+        cursor: pointer;
+      }
+
+      .wf-box-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .wf-box-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-block-size: 44px;
+        padding: 6px 4px;
+        border: 1.5px solid #000;
+        border-radius: 10px;
+        background: #fff;
+        color: #000;
+        font-size: 0.72rem;
+        font-weight: 600;
+        line-height: 1.3;
+        text-align: center;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+        cursor: pointer;
+      }
+
+      .wf-box-btn:hover {
+        background: #f2f2f2;
+      }
+
+      .wf-box-btn:active {
+        background: #000;
+        color: #fff;
+      }
+
+      .wf-empty {
+        padding: 14px 12px;
+        border: 1.5px dashed #000;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 0.82rem;
+      }
+
+      .wf-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding-top: 4px;
+      }
+
+      .wf-pagination[hidden] {
+        display: none;
+      }
+
+      .wf-page-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-inline-size: 40px;
+        min-block-size: 44px;
+        padding: 4px 10px;
+        border: 1.5px solid #000;
+        border-radius: 8px;
+        background: #fff;
+        color: #000;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .wf-page-btn[aria-current="page"] {
+        background: #000;
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      .wf-page-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      /* =========================================================
+         Bottom Slide-In Drawer & Download Forms (B&W Wireframe)
+         ========================================================= */
+      .wf-drawer-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 190;
+        background: rgb(0 0 0 / 45%);
+      }
+
+      .wf-drawer-backdrop[hidden] {
+        display: none;
+      }
+
+      .wf-drawer {
+        position: fixed;
+        inset-block-end: 0;
+        inset-inline: 0;
+        z-index: 200;
+        width: min(100%, 430px);
+        max-block-size: 90dvh;
+        margin-inline: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px 16px max(16px, env(safe-area-inset-bottom, 0px));
+        border: 2px solid #000;
+        border-bottom: 0;
+        border-radius: 18px 18px 0 0;
+        background: #000;
+        color: #fff;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        box-shadow: 0 -10px 30px rgb(0 0 0 / 28%);
+      }
+
+      .wf-drawer[hidden] {
+        display: none;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .wf-drawer.is-entering {
+          animation: wf-slide-up 240ms ease-out both;
+        }
+      }
+
+      @keyframes wf-slide-up {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      .wf-drawer :where(button, input, select, a, [tabindex]):focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
+
+      .wf-drawer-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .wf-map-pill {
+        display: inline-flex;
+        align-items: center;
+        max-inline-size: 64%;
+        min-block-size: 32px;
+        padding: 4px 12px;
+        border: 1.5px solid #fff;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #fff;
+        overflow-wrap: break-word;
+      }
+
+      .wf-drawer-icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-inline-size: 44px;
+        min-block-size: 44px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .wf-drawer-icon-btn:hover {
+        background: rgb(255 255 255 / 14%);
+      }
+
+      .wf-drawer-icon-btn svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .wf-drawer-chevron-btn[aria-expanded="false"] svg {
+        transform: rotate(180deg);
+      }
+
+      .wf-viewer-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .wf-viewer-body[hidden] {
+        display: none;
+      }
+
+      .wf-viewer-tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .wf-viewer-seg {
+        display: inline-flex;
+        border: 1.5px solid #fff;
+        border-radius: 999px;
+        padding: 2px;
+        gap: 2px;
+      }
+
+      .wf-viewer-seg[hidden] {
+        display: none;
+      }
+
+      .wf-viewer-seg-btn {
+        min-block-size: 34px;
+        padding: 3px 10px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: #fff;
+        font-size: 0.74rem;
+        font-weight: 600;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .wf-viewer-seg-btn::after {
+        content: "";
+        position: absolute;
+        inset: -5px 0;
+      }
+
+      .wf-viewer-seg-btn[aria-pressed="true"] {
+        background: #fff;
+        color: #000;
+      }
+
+      .wf-zoom-controls {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-inline-start: auto;
+      }
+
+      .wf-zoom-btn {
+        min-inline-size: 38px;
+        min-block-size: 36px;
+        padding: 2px 8px;
+        border: 1px solid #fff;
+        border-radius: 8px;
+        background: transparent;
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .wf-preview-canvas {
+        width: 100%;
+        height: min(46dvh, 320px);
+        border-radius: 12px;
+        background: #fff;
+        overflow: auto;
+        display: grid;
+        place-items: center;
+        padding: 8px;
+      }
+
+      .wf-preview-canvas img {
+        display: block;
+        max-width: none;
+        width: calc(var(--zoom, 1) * 100%);
+        height: auto;
+        transform-origin: center;
+      }
+
+      .wf-drawer-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .wf-pill-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-block-size: 46px;
+        padding: 10px 14px;
+        border: 1.5px solid #fff;
+        border-radius: 999px;
+        background: #fff;
+        color: #000;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .wf-pill-cta:hover {
+        background: #e5e5e5;
+      }
+
+      .wf-pill-cta--center {
+        align-self: center;
+        min-inline-size: 180px;
+      }
+
+      .wf-form-view,
+      .wf-confirm-view {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .wf-form-view[hidden],
+      .wf-confirm-view[hidden] {
+        display: none;
+      }
+
+      .wf-form-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .wf-form-head h2 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+
+      .wf-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .wf-form-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      @media (max-width: 360px) {
+        .wf-form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .wf-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-inline-size: 0;
+      }
+
+      .wf-field label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      .wf-input,
+      .wf-form-select {
+        width: 100%;
+        min-block-size: 44px;
+        padding: 8px 12px;
+        border: 1.5px solid #fff;
+        border-radius: 10px;
+        background: #fff;
+        color: #000;
+        font-size: max(1rem, 1em);
+        line-height: 1.35;
+      }
+
+      .wf-input:is(:user-invalid, .user-invalid-fallback),
+      .wf-form-select:is(:user-invalid, .user-invalid-fallback) {
+        border-color: #ff6b6b;
+        background-color: #fff0f0;
+      }
+
+      .wf-error-msg {
+        display: none;
+        font-size: 0.74rem;
+        line-height: 1.35;
+        color: #ff9c9c;
+      }
+
+      :is(:user-invalid, .user-invalid-fallback) + .wf-error-msg {
+        display: block;
+      }
+
+      .wf-terms-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .wf-terms-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-block-size: 44px;
+      }
+
+      .wf-terms-row input[type="checkbox"] {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        accent-color: #fff;
+        cursor: pointer;
+      }
+
+      .wf-terms-row label {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .wf-terms-row a {
+        text-decoration: underline;
+        font-weight: 600;
+      }
+
+      .wf-terms-row:has(input:is(:user-invalid, .user-invalid-fallback)) + .wf-error-msg {
+        display: block;
+      }
+
+      .wf-price-line {
+        font-size: 0.9rem;
+        font-weight: 700;
+        padding-block: 2px;
+      }
+
+      .wf-confirm-box {
+        border: 1.5px solid #fff;
+        border-radius: 12px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .wf-confirm-box h2 {
+        font-size: 1.15rem;
+      }
+
+      .wf-confirm-box p {
+        font-size: 0.86rem;
+        line-height: 1.5;
+        color: #e5e5e5;
+      }
     </style>
   </head>
   <body>
-    <a class="skip-link" href="#primary-menu">Skip to navigation</a>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
     <div class="announcement-bar" aria-label="Announcement">
       <div class="container announcement-content">
@@ -802,7 +1662,6 @@
             <li>
               <a
                 href="https://dpsmap.com/"
-                aria-current="page"
                 data-en="Home"
                 data-my="ပင်မစာမျက်နှာ"
                 >Home</a
@@ -835,6 +1694,7 @@
             <li>
               <a
                 href="https://dpsmap.com/map-download/"
+                aria-current="page"
                 data-en="Downloads"
                 data-my="ဒေါင်းလုဒ်များ"
                 >Downloads</a
@@ -951,6 +1811,343 @@
         </nav>
       </div>
     </header>
+
+    <main id="main-content" class="wf-main" tabindex="-1">
+      <section class="wf-hero" aria-labelledby="hero-title">
+        <h1
+          id="hero-title"
+          data-en="Download DPS Maps"
+          data-my="DPS မြေပုံများ ဒေါင်းလုဒ်ရယူရန်"
+        >
+          Download DPS Maps
+        </h1>
+        <p
+          data-en="Select your region or city map below to receive your verified high-resolution PDF download link."
+          data-my="မြန်မာနိုင်ငံ တိုင်းဒေသကြီး၊ ပြည်နယ်နှင့် မြို့မြေပုံများကို အောက်တွင် ရွေးချယ်ကြည့်ရှုနိုင်ပါသည်။"
+        >
+          Select your region or city map below to receive your verified
+          high-resolution PDF download link.
+        </p>
+      </section>
+
+      <section class="wf-section" aria-labelledby="popular-heading">
+        <h2
+          id="popular-heading"
+          class="wf-section-title"
+          data-en="Popular Maps"
+          data-my="လူကြိုက်များသော မြေပုံများ"
+        >
+          Popular Maps
+        </h2>
+        <div id="popular-grid" class="wf-popular-grid"></div>
+      </section>
+
+      <section class="wf-section" aria-labelledby="explore-heading">
+        <h2
+          id="explore-heading"
+          class="wf-section-title"
+          data-en="Explore Maps"
+          data-my="မြေပုံများ ရှာဖွေရန်"
+        >
+          Explore Maps
+        </h2>
+
+        <search>
+          <form id="map-search-form" class="wf-search-form" role="search">
+            <label
+              class="sr-only"
+              for="map-search-input"
+              data-en="Search Map"
+              data-my="မြေပုံရှာဖွေရန်"
+              >Search Map</label
+            >
+            <input
+              id="map-search-input"
+              class="wf-search-input"
+              type="search"
+              name="q"
+              placeholder="Search Map"
+              data-en-placeholder="Search Map"
+              data-my-placeholder="မြေပုံအမည် ရှာဖွေပါ..."
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="none"
+              spellcheck="false"
+              enterkeyhint="search"
+            />
+            <button
+              type="submit"
+              class="wf-search-btn"
+              aria-label="Search maps"
+              data-en-label="Search maps"
+              data-my-label="မြေပုံရှာဖွေပါ"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+              </svg>
+            </button>
+          </form>
+        </search>
+
+        <div
+          id="search-results-panel"
+          class="wf-search-results"
+          hidden
+          aria-labelledby="search-results-status"
+        >
+          <div class="wf-search-results-head">
+            <span
+              id="search-results-status"
+              role="status"
+              aria-live="polite"
+            ></span>
+            <button
+              id="search-clear-btn"
+              type="button"
+              class="wf-clear-btn"
+              data-en="Clear"
+              data-my="ရှင်းလင်းရန်"
+            >
+              Clear
+            </button>
+          </div>
+          <div id="search-results-grid" class="wf-box-grid"></div>
+          <p id="search-results-empty" class="wf-empty" hidden>
+            No maps matched your search.
+          </p>
+        </div>
+
+        <div class="wf-myanmar-head">
+          <h3
+            id="myanmar-map-heading"
+            class="wf-section-title"
+            style="font-style: italic"
+            data-en="Myanmar Map"
+            data-my="မြန်မာနိုင်ငံမြေပုံ"
+          >
+            Myanmar Map
+          </h3>
+          <div
+            class="wf-lang-group"
+            role="group"
+            aria-labelledby="map-lang-label"
+          >
+            <span
+              id="map-lang-label"
+              class="wf-lang-label"
+              data-en="Map Language:"
+              data-my="မြေပုံဘာသာ:"
+              >Map Language:</span
+            >
+            <div class="wf-segmented">
+              <button
+                type="button"
+                class="wf-seg-btn"
+                data-map-lang="en"
+                aria-pressed="true"
+              >
+                Eng
+              </button>
+              <button
+                type="button"
+                class="wf-seg-btn"
+                data-map-lang="my"
+                aria-pressed="false"
+              >
+                Myan
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button
+          id="myanmar-single-card"
+          type="button"
+          class="wf-myanmar-card"
+          aria-labelledby="myanmar-card-caption"
+        >
+          <span class="wf-myanmar-frame">
+            <img
+              id="myanmar-card-img"
+              src="assets/maps/myanmar-english.jpg"
+              alt="Myanmar Map (English edition)"
+            />
+          </span>
+          <span id="myanmar-card-caption" class="wf-myanmar-caption">
+            <span id="myanmar-card-title">Myanmar Map (English Edition)</span>
+            <span aria-hidden="true">↗</span>
+          </span>
+        </button>
+      </section>
+
+      <section class="wf-section" aria-labelledby="state-regional-btn">
+        <h2 class="wf-disclosure-heading">
+          <button
+            id="state-regional-btn"
+            type="button"
+            class="wf-disclosure-btn"
+            aria-expanded="true"
+            aria-controls="state-regional-panel"
+          >
+            <span
+              data-en="State & Regional Maps"
+              data-my="ပြည်နယ်နှင့် တိုင်းဒေသကြီး မြေပုံများ"
+              >State &amp; Regional Maps</span
+            >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+        </h2>
+
+        <div id="state-regional-panel" class="wf-panel">
+          <div
+            class="wf-segmented"
+            role="tablist"
+            aria-label="Regions or States"
+          >
+            <button
+              type="button"
+              role="tab"
+              id="tab-regions"
+              class="wf-seg-btn"
+              data-sr-tab="regions"
+              aria-selected="true"
+              data-en="Regions"
+              data-my="တိုင်းဒေသကြီး"
+            >
+              Regions
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="tab-states"
+              class="wf-seg-btn"
+              data-sr-tab="states"
+              aria-selected="false"
+              data-en="States"
+              data-my="ပြည်နယ်"
+            >
+              States
+            </button>
+          </div>
+          <div id="state-regional-grid" class="wf-box-grid"></div>
+        </div>
+      </section>
+
+      <section class="wf-section" aria-labelledby="local-maps-btn">
+        <h2 class="wf-disclosure-heading">
+          <button
+            id="local-maps-btn"
+            type="button"
+            class="wf-disclosure-btn"
+            aria-expanded="true"
+            aria-controls="local-maps-panel"
+          >
+            <span
+              data-en="Districts, Townships, Towns/Cities"
+              data-my="ခရိုင်၊ မြို့နယ်နှင့် မြို့မြေပုံများ"
+              >Districts, Townships, Towns/Cities</span
+            >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+        </h2>
+
+        <div id="local-maps-panel" class="wf-panel">
+          <div class="wf-toolbar">
+            <div
+              class="wf-segmented wf-segmented-scroll"
+              role="tablist"
+              aria-label="Local map category"
+            >
+              <button
+                type="button"
+                role="tab"
+                id="tab-districts"
+                class="wf-seg-btn"
+                data-local-tab="districts"
+                aria-selected="true"
+                data-en="Districts"
+                data-my="ခရိုင်"
+              >
+                Districts
+              </button>
+              <button
+                type="button"
+                role="tab"
+                id="tab-townships"
+                class="wf-seg-btn"
+                data-local-tab="townships"
+                aria-selected="false"
+                data-en="Townships"
+                data-my="မြို့နယ်"
+              >
+                Townships
+              </button>
+              <button
+                type="button"
+                role="tab"
+                id="tab-cities"
+                class="wf-seg-btn"
+                data-local-tab="cities"
+                aria-selected="false"
+                data-en="Towns/Cities"
+                data-my="မြို့"
+              >
+                Towns/Cities
+              </button>
+            </div>
+
+            <div class="wf-filter-wrap">
+              <label
+                for="region-filter"
+                data-en="Filter Region"
+                data-my="ဒေသရွေးရန်"
+                >Filter Region</label
+              >
+              <select id="region-filter" class="wf-select"></select>
+            </div>
+          </div>
+
+          <div id="local-maps-grid" class="wf-box-grid"></div>
+          <p id="local-maps-empty" class="wf-empty" hidden>
+            No maps available for the selected region in this category.
+          </p>
+          <nav
+            id="local-pagination"
+            class="wf-pagination"
+            aria-label="Map list pagination"
+          ></nav>
+        </div>
+      </section>
+    </main>
 
     <footer class="site-footer">
       <div class="container footer-brand-row">
@@ -1185,8 +2382,1348 @@
                   `open${button.lang === "my" ? "My" : "En"}`
                 ],
           );
+          window.dispatchEvent(
+            new CustomEvent("dps:uilangchange", { detail: { lang: button.lang } }),
+          );
         });
       });
+    </script>
+
+    <div id="drawer-backdrop" class="wf-drawer-backdrop" hidden></div>
+
+    <aside
+      id="map-drawer"
+      class="wf-drawer"
+      role="region"
+      aria-label="Map image viewer and download drawer"
+      hidden
+    >
+      <!-- View 1: Map Image Viewer (Opened & Closed/Minimized) -->
+      <div id="drawer-viewer-view">
+        <div class="wf-drawer-bar">
+          <span id="viewer-map-pill" class="wf-map-pill">Yangon Map</span>
+          <button
+            id="viewer-toggle-btn"
+            type="button"
+            class="wf-drawer-icon-btn wf-drawer-chevron-btn"
+            aria-expanded="true"
+            aria-controls="viewer-body"
+            aria-label="Collapse map preview"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <button
+            id="viewer-close-btn"
+            type="button"
+            class="wf-drawer-icon-btn"
+            aria-label="Close drawer"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div id="viewer-body" class="wf-viewer-body">
+          <div class="wf-viewer-tools">
+            <div
+              id="viewer-layer-seg"
+              class="wf-viewer-seg"
+              role="group"
+              aria-label="Map preview mode"
+              hidden
+            >
+              <button
+                type="button"
+                class="wf-viewer-seg-btn"
+                data-preview-mode="overview"
+                aria-pressed="true"
+              >
+                Overview
+              </button>
+              <button
+                type="button"
+                class="wf-viewer-seg-btn"
+                data-preview-mode="detail"
+                aria-pressed="false"
+              >
+                Detail
+              </button>
+            </div>
+
+            <div
+              class="wf-zoom-controls"
+              role="group"
+              aria-label="Zoom preview"
+            >
+              <button
+                id="zoom-out-btn"
+                type="button"
+                class="wf-zoom-btn"
+                aria-label="Zoom out"
+              >
+                −
+              </button>
+              <button
+                id="zoom-reset-btn"
+                type="button"
+                class="wf-zoom-btn"
+                aria-label="Reset zoom to 100%"
+              >
+                100%
+              </button>
+              <button
+                id="zoom-in-btn"
+                type="button"
+                class="wf-zoom-btn"
+                aria-label="Zoom in"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="viewer-canvas"
+            class="wf-preview-canvas"
+            role="region"
+            tabindex="0"
+            aria-label="Map preview image"
+          >
+            <img id="viewer-img" src="" alt="" />
+          </div>
+        </div>
+
+        <div class="wf-drawer-actions">
+          <button
+            id="open-free-form-btn"
+            type="button"
+            class="wf-pill-cta"
+            data-en="Free Download"
+            data-my="အခမဲ့ ဒေါင်းလုဒ်"
+          >
+            Free Download
+          </button>
+          <button
+            id="open-paid-form-btn"
+            type="button"
+            class="wf-pill-cta"
+            data-en="Paid Download"
+            data-my="ဝယ်ယူ ဒေါင်းလုဒ်"
+          >
+            Paid Download
+          </button>
+        </div>
+      </div>
+
+      <!-- View 2: Free Download Form -->
+      <div id="drawer-free-view" class="wf-form-view" hidden>
+        <div class="wf-drawer-bar">
+          <button
+            type="button"
+            class="wf-drawer-icon-btn js-back-to-preview"
+            aria-label="Back to map preview"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="wf-drawer-icon-btn js-close-drawer"
+            aria-label="Close drawer"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="wf-form-head">
+          <h2 id="free-form-heading" tabindex="-1">Free Download</h2>
+          <span id="free-map-pill" class="wf-map-pill">Yangon Map</span>
+        </div>
+
+        <form id="free-download-form" class="wf-form" method="post">
+          <div class="wf-form-row">
+            <div class="wf-field">
+              <label for="free-first-name"
+                >First Name <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="free-first-name"
+                name="first_name"
+                type="text"
+                class="wf-input"
+                autocomplete="given-name"
+                enterkeyhint="next"
+                required
+                aria-invalid="false"
+                data-error="free-first-name-err"
+              />
+              <div id="free-first-name-err" class="wf-error-msg">
+                Please enter your first name.
+              </div>
+            </div>
+            <div class="wf-field">
+              <label for="free-last-name"
+                >Last Name <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="free-last-name"
+                name="last_name"
+                type="text"
+                class="wf-input"
+                autocomplete="family-name"
+                enterkeyhint="next"
+                required
+                aria-invalid="false"
+                data-error="free-last-name-err"
+              />
+              <div id="free-last-name-err" class="wf-error-msg">
+                Please enter your last name.
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-form-row">
+            <div class="wf-field">
+              <label for="free-email"
+                >Email Address <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="free-email"
+                name="email"
+                type="email"
+                class="wf-input"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="none"
+                spellcheck="false"
+                enterkeyhint="next"
+                required
+                aria-invalid="false"
+                data-error="free-email-err"
+              />
+              <div id="free-email-err" class="wf-error-msg">
+                Enter a valid email address (you@example.com).
+              </div>
+            </div>
+            <div class="wf-field">
+              <label for="free-phone"
+                >Phone Number <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="free-phone"
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                class="wf-input"
+                autocomplete="tel"
+                enterkeyhint="next"
+                required
+                aria-invalid="false"
+                data-error="free-phone-err"
+              />
+              <div id="free-phone-err" class="wf-error-msg">
+                Please enter your phone number.
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-field">
+            <label for="free-reason"
+              >Reason For Download <span aria-hidden="true">*</span></label
+            >
+            <select
+              id="free-reason"
+              name="reason"
+              class="wf-form-select"
+              required
+              aria-invalid="false"
+              data-error="free-reason-err"
+            >
+              <option value="">Select an option</option>
+              <option value="option-1">Option 1</option>
+              <option value="option-2">Option 2</option>
+              <option value="option-3">Option 3</option>
+            </select>
+            <div id="free-reason-err" class="wf-error-msg">
+              Please select a reason for download.
+            </div>
+          </div>
+
+          <div class="wf-field">
+            <label for="free-source"
+              >Where did you learn about this map?
+              <span aria-hidden="true">*</span></label
+            >
+            <select
+              id="free-source"
+              name="source"
+              class="wf-form-select"
+              required
+              aria-invalid="false"
+              data-error="free-source-err"
+            >
+              <option value="">Select an option</option>
+              <option value="option-1">Option 1</option>
+              <option value="option-2">Option 2</option>
+              <option value="option-3">Option 3</option>
+            </select>
+            <div id="free-source-err" class="wf-error-msg">
+              Please select where you learned about this map.
+            </div>
+          </div>
+
+          <div class="wf-terms-field">
+            <div class="wf-terms-row">
+              <input
+                id="free-terms"
+                name="terms"
+                type="checkbox"
+                required
+                aria-invalid="false"
+                data-error="free-terms-err"
+              />
+              <label for="free-terms">
+                I have read and agree to the
+                <a
+                  href="https://dpsmap.com/termsandconditions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Terms &amp; Conditions</a
+                >
+              </label>
+            </div>
+            <div id="free-terms-err" class="wf-error-msg">
+              Please agree to the Terms &amp; Conditions before submitting.
+            </div>
+          </div>
+
+          <button type="submit" class="wf-pill-cta wf-pill-cta--center">
+            Download
+          </button>
+        </form>
+      </div>
+
+      <!-- View 3: Paid Download Form -->
+      <div id="drawer-paid-view" class="wf-form-view" hidden>
+        <div class="wf-drawer-bar">
+          <button
+            type="button"
+            class="wf-drawer-icon-btn js-back-to-preview"
+            aria-label="Back to map preview"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="wf-drawer-icon-btn js-close-drawer"
+            aria-label="Close drawer"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="wf-form-head">
+          <h2 id="paid-form-heading" tabindex="-1">Paid Download</h2>
+          <span id="paid-map-pill" class="wf-map-pill">Yangon Map</span>
+        </div>
+
+        <form id="paid-download-form" class="wf-form" method="post">
+          <div class="wf-form-row">
+            <div class="wf-field">
+              <label for="paid-first-name"
+                >First Name <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="paid-first-name"
+                name="first_name"
+                type="text"
+                class="wf-input"
+                autocomplete="given-name"
+                enterkeyhint="next"
+                required
+                aria-invalid="false"
+                data-error="paid-first-name-err"
+              />
+              <div id="paid-first-name-err" class="wf-error-msg">
+                Please enter your first name.
+              </div>
+            </div>
+            <div class="wf-field">
+              <label for="paid-last-name"
+                >Last Name <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="paid-last-name"
+                name="last_name"
+                type="text"
+                class="wf-input"
+                autocomplete="family-name"
+                enterkeyhint="next"
+                required
+                aria-invalid="false"
+                data-error="paid-last-name-err"
+              />
+              <div id="paid-last-name-err" class="wf-error-msg">
+                Please enter your last name.
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-form-row">
+            <div class="wf-field">
+              <label for="paid-email"
+                >Email Address <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="paid-email"
+                name="email"
+                type="email"
+                class="wf-input"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="none"
+                spellcheck="false"
+                enterkeyhint="next"
+                required
+                aria-invalid="false"
+                data-error="paid-email-err"
+              />
+              <div id="paid-email-err" class="wf-error-msg">
+                Enter a valid email address (you@example.com).
+              </div>
+            </div>
+            <div class="wf-field">
+              <label for="paid-phone"
+                >Phone Number <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="paid-phone"
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                class="wf-input"
+                autocomplete="tel"
+                enterkeyhint="next"
+                required
+                aria-invalid="false"
+                data-error="paid-phone-err"
+              />
+              <div id="paid-phone-err" class="wf-error-msg">
+                Please enter your phone number.
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-field">
+            <label for="paid-reason"
+              >Reason For Download <span aria-hidden="true">*</span></label
+            >
+            <select
+              id="paid-reason"
+              name="reason"
+              class="wf-form-select"
+              required
+              aria-invalid="false"
+              data-error="paid-reason-err"
+            >
+              <option value="">Select an option</option>
+              <option value="option-1">Option 1</option>
+              <option value="option-2">Option 2</option>
+              <option value="option-3">Option 3</option>
+            </select>
+            <div id="paid-reason-err" class="wf-error-msg">
+              Please select a reason for download.
+            </div>
+          </div>
+
+          <div class="wf-field">
+            <label for="paid-source"
+              >Where did you learn about this map?
+              <span aria-hidden="true">*</span></label
+            >
+            <select
+              id="paid-source"
+              name="source"
+              class="wf-form-select"
+              required
+              aria-invalid="false"
+              data-error="paid-source-err"
+            >
+              <option value="">Select an option</option>
+              <option value="option-1">Option 1</option>
+              <option value="option-2">Option 2</option>
+              <option value="option-3">Option 3</option>
+            </select>
+            <div id="paid-source-err" class="wf-error-msg">
+              Please select where you learned about this map.
+            </div>
+          </div>
+
+          <div class="wf-form-row">
+            <div class="wf-field">
+              <label for="paid-product"
+                >Map product/ print type <span aria-hidden="true">*</span></label
+              >
+              <select
+                id="paid-product"
+                name="product_type"
+                class="wf-form-select"
+                required
+                aria-invalid="false"
+                data-error="paid-product-err"
+              >
+                <option value="">Select type</option>
+                <option value="option-1" data-price="10000">Option 1</option>
+                <option value="option-2" data-price="20000">Option 2</option>
+                <option value="option-3" data-price="30000">Option 3</option>
+              </select>
+              <div id="paid-product-err" class="wf-error-msg">
+                Please select a product type.
+              </div>
+            </div>
+            <div class="wf-field">
+              <label for="paid-size"
+                >Map size <span aria-hidden="true">*</span></label
+              >
+              <select
+                id="paid-size"
+                name="map_size"
+                class="wf-form-select"
+                required
+                aria-invalid="false"
+                data-error="paid-size-err"
+              >
+                <option value="">Select size</option>
+                <option value="option-1" data-price="0">Option 1</option>
+                <option value="option-2" data-price="10000">Option 2</option>
+                <option value="option-3" data-price="20000">Option 3</option>
+              </select>
+              <div id="paid-size-err" class="wf-error-msg">
+                Please select a map size.
+              </div>
+            </div>
+          </div>
+
+          <p class="wf-price-line" role="status" aria-live="polite">
+            Calculated Price: <span id="paid-price-value">0MMK</span>
+          </p>
+
+          <div class="wf-terms-field">
+            <div class="wf-terms-row">
+              <input
+                id="paid-terms"
+                name="terms"
+                type="checkbox"
+                required
+                aria-invalid="false"
+                data-error="paid-terms-err"
+              />
+              <label for="paid-terms">
+                I have read and agree to the
+                <a
+                  href="https://dpsmap.com/termsandconditions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Terms &amp; Conditions</a
+                >
+              </label>
+            </div>
+            <div id="paid-terms-err" class="wf-error-msg">
+              Please agree to the Terms &amp; Conditions before submitting.
+            </div>
+          </div>
+
+          <button type="submit" class="wf-pill-cta wf-pill-cta--center">
+            Request Download
+          </button>
+        </form>
+      </div>
+
+      <!-- View 4: In-Drawer Confirmation -->
+      <div id="drawer-confirm-view" class="wf-confirm-view" hidden>
+        <div class="wf-drawer-bar">
+          <span id="confirm-map-pill" class="wf-map-pill">Yangon Map</span>
+          <button
+            type="button"
+            class="wf-drawer-icon-btn js-close-drawer"
+            aria-label="Close drawer"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="m6 6 12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="wf-confirm-box" role="status" aria-live="polite">
+          <h2 id="confirm-heading" tabindex="-1">Request Received</h2>
+          <p id="confirm-summary"></p>
+        </div>
+
+        <button
+          id="confirm-done-btn"
+          type="button"
+          class="wf-pill-cta wf-pill-cta--center"
+        >
+          Done
+        </button>
+      </div>
+    </aside>
+
+    <script src="maps-data.js"></script>
+    <script>
+      (() => {
+        const CATALOG = window.DPS_MAPS;
+        if (!CATALOG) return;
+
+        const PAGE_SIZE = 12;
+        const state = {
+          uiLang: document.documentElement.lang === "my" ? "my" : "en",
+          mapLang: "en",
+          srTab: "regions",
+          localTab: "districts",
+          regionFilter: "all",
+          localPage: 1,
+          searchQuery: "",
+          drawerState: "hidden", // hidden | opened | closed | free-form | paid-form | confirmation
+          activeMap: null,
+          previewMode: "overview",
+          zoom: 1,
+          lastTrigger: null,
+        };
+
+        const els = {
+          popularGrid: document.getElementById("popular-grid"),
+          searchForm: document.getElementById("map-search-form"),
+          searchInput: document.getElementById("map-search-input"),
+          searchPanel: document.getElementById("search-results-panel"),
+          searchStatus: document.getElementById("search-results-status"),
+          searchGrid: document.getElementById("search-results-grid"),
+          searchEmpty: document.getElementById("search-results-empty"),
+          searchClearBtn: document.getElementById("search-clear-btn"),
+          myanmarCard: document.getElementById("myanmar-single-card"),
+          myanmarImg: document.getElementById("myanmar-card-img"),
+          myanmarTitle: document.getElementById("myanmar-card-title"),
+          mapLangBtns: document.querySelectorAll("[data-map-lang]"),
+          srGrid: document.getElementById("state-regional-grid"),
+          srTabs: document.querySelectorAll("[data-sr-tab]"),
+          localTabs: document.querySelectorAll("[data-local-tab]"),
+          regionFilter: document.getElementById("region-filter"),
+          localGrid: document.getElementById("local-maps-grid"),
+          localEmpty: document.getElementById("local-maps-empty"),
+          localPagination: document.getElementById("local-pagination"),
+          disclosureBtns: document.querySelectorAll(".wf-disclosure-btn"),
+          drawerBackdrop: document.getElementById("drawer-backdrop"),
+          drawer: document.getElementById("map-drawer"),
+          viewerView: document.getElementById("drawer-viewer-view"),
+          viewerBody: document.getElementById("viewer-body"),
+          viewerToggleBtn: document.getElementById("viewer-toggle-btn"),
+          viewerCloseBtn: document.getElementById("viewer-close-btn"),
+          viewerPill: document.getElementById("viewer-map-pill"),
+          viewerLayerSeg: document.getElementById("viewer-layer-seg"),
+          viewerLayerBtns: document.querySelectorAll("[data-preview-mode]"),
+          viewerCanvas: document.getElementById("viewer-canvas"),
+          viewerImg: document.getElementById("viewer-img"),
+          zoomOutBtn: document.getElementById("zoom-out-btn"),
+          zoomResetBtn: document.getElementById("zoom-reset-btn"),
+          zoomInBtn: document.getElementById("zoom-in-btn"),
+          openFreeBtn: document.getElementById("open-free-form-btn"),
+          openPaidBtn: document.getElementById("open-paid-form-btn"),
+          freeView: document.getElementById("drawer-free-view"),
+          freeHeading: document.getElementById("free-form-heading"),
+          freePill: document.getElementById("free-map-pill"),
+          freeForm: document.getElementById("free-download-form"),
+          paidView: document.getElementById("drawer-paid-view"),
+          paidHeading: document.getElementById("paid-form-heading"),
+          paidPill: document.getElementById("paid-map-pill"),
+          paidForm: document.getElementById("paid-download-form"),
+          paidProduct: document.getElementById("paid-product"),
+          paidSize: document.getElementById("paid-size"),
+          paidPriceValue: document.getElementById("paid-price-value"),
+          confirmView: document.getElementById("drawer-confirm-view"),
+          confirmHeading: document.getElementById("confirm-heading"),
+          confirmPill: document.getElementById("confirm-map-pill"),
+          confirmSummary: document.getElementById("confirm-summary"),
+          confirmDoneBtn: document.getElementById("confirm-done-btn"),
+        };
+
+        function mapTitle(item) {
+          if (!item) return "";
+          if (state.uiLang === "my" && item.titleMy) return item.titleMy;
+          return item.titleEn || item.titleMy || "";
+        }
+
+        function mapPillTitle(item) {
+          const base = mapTitle(item);
+          return /map$/i.test(base) || state.uiLang === "my"
+            ? base
+            : `${base} Map`;
+        }
+
+        function resolveOverviewSrc(item) {
+          if (!item) return "";
+          if (item.editions) {
+            return item.editions[state.mapLang] || item.editions.en;
+          }
+          return item.overviewSrc;
+        }
+
+        function makeBoxButton(item) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "wf-box-btn";
+          btn.textContent = mapTitle(item);
+          btn.addEventListener("click", () => openDrawerWithMap(item, btn));
+          return btn;
+        }
+
+        function renderPopular() {
+          els.popularGrid.replaceChildren();
+          CATALOG.popular.forEach((item) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "wf-popular-card";
+            btn.innerHTML = `
+              <span class="wf-popular-thumb">
+                <img src="${item.overviewSrc}" alt="${item.titleEn} map preview" loading="lazy" />
+              </span>
+              <span class="wf-popular-name">${mapTitle(item)}</span>
+            `;
+            btn.addEventListener("click", () => openDrawerWithMap(item, btn));
+            els.popularGrid.append(btn);
+          });
+        }
+
+        function renderMyanmarSingle() {
+          const mm = CATALOG.myanmarOverview;
+          const isMy = state.mapLang === "my";
+          els.myanmarImg.src = isMy ? mm.editions.my : mm.editions.en;
+          els.myanmarImg.alt = isMy
+            ? "Myanmar Map (Burmese edition)"
+            : "Myanmar Map (English edition)";
+          els.myanmarTitle.textContent = isMy
+            ? "မြန်မာနိုင်ငံမြေပုံ (Burmese Edition)"
+            : "Myanmar Map (English Edition)";
+          els.mapLangBtns.forEach((btn) => {
+            btn.setAttribute(
+              "aria-pressed",
+              String(btn.dataset.mapLang === state.mapLang),
+            );
+          });
+        }
+
+        function renderStateRegional() {
+          const items =
+            state.srTab === "states" ? CATALOG.states : CATALOG.regions;
+          els.srTabs.forEach((tab) => {
+            const active = tab.dataset.srTab === state.srTab;
+            tab.setAttribute("aria-selected", String(active));
+          });
+          els.srGrid.replaceChildren(...items.map(makeBoxButton));
+        }
+
+        function populateRegionFilter() {
+          const prev = state.regionFilter;
+          els.regionFilter.replaceChildren();
+          CATALOG.regionOptions.forEach((opt) => {
+            const optionEl = document.createElement("option");
+            optionEl.value = opt.key;
+            optionEl.textContent =
+              state.uiLang === "my" ? opt.labelMy : opt.labelEn;
+            els.regionFilter.append(optionEl);
+          });
+          els.regionFilter.value = prev;
+        }
+
+        function renderLocalMaps() {
+          els.localTabs.forEach((tab) => {
+            tab.setAttribute(
+              "aria-selected",
+              String(tab.dataset.localTab === state.localTab),
+            );
+          });
+
+          const source = CATALOG[state.localTab] || [];
+          const filtered =
+            state.regionFilter === "all"
+              ? source
+              : source.filter((item) => item.regionKey === state.regionFilter);
+
+          const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+          if (state.localPage > totalPages) state.localPage = 1;
+
+          const start = (state.localPage - 1) * PAGE_SIZE;
+          const slice = filtered.slice(start, start + PAGE_SIZE);
+
+          els.localGrid.replaceChildren(...slice.map(makeBoxButton));
+          els.localEmpty.hidden = filtered.length > 0;
+          renderPagination(totalPages, filtered.length);
+        }
+
+        function renderPagination(totalPages, totalItems) {
+          els.localPagination.replaceChildren();
+          if (totalItems === 0 || totalPages <= 1) {
+            els.localPagination.hidden = true;
+            return;
+          }
+          els.localPagination.hidden = false;
+
+          const addBtn = (label, page, { disabled = false, current = false } = {}) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "wf-page-btn";
+            btn.textContent = label;
+            btn.disabled = disabled;
+            if (current) btn.setAttribute("aria-current", "page");
+            btn.addEventListener("click", () => {
+              state.localPage = page;
+              renderLocalMaps();
+            });
+            els.localPagination.append(btn);
+          };
+
+          addBtn("Back", state.localPage - 1, {
+            disabled: state.localPage === 1,
+          });
+
+          // Keep page pills compact for 320px-430px mobile widths
+          const maxButtons = 5;
+          let startPage = Math.max(1, state.localPage - 2);
+          let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+          if (endPage - startPage + 1 < maxButtons) {
+            startPage = Math.max(1, endPage - maxButtons + 1);
+          }
+
+          for (let p = startPage; p <= endPage; p += 1) {
+            addBtn(String(p), p, { current: p === state.localPage });
+          }
+
+          addBtn("Next", state.localPage + 1, {
+            disabled: state.localPage === totalPages,
+          });
+        }
+
+        function allSearchableMaps() {
+          const regionNameByKey = Object.fromEntries(
+            CATALOG.regionOptions.map((r) => [r.key, `${r.labelEn} ${r.labelMy}`]),
+          );
+          return [
+            {
+              ...CATALOG.myanmarOverview,
+              overviewSrc: resolveOverviewSrc(CATALOG.myanmarOverview),
+              detailSrc: null,
+            },
+            ...CATALOG.regions,
+            ...CATALOG.states,
+            ...CATALOG.districts,
+            ...CATALOG.townships,
+            ...CATALOG.cities,
+          ].map((item) => ({
+            ...item,
+            _haystack: `${item.titleEn || ""} ${item.titleMy || ""} ${
+              regionNameByKey[item.regionKey] || ""
+            }`.toLowerCase(),
+          }));
+        }
+
+        function renderSearchResults() {
+          const q = state.searchQuery.trim().toLowerCase();
+          if (!q) {
+            els.searchPanel.hidden = true;
+            els.searchGrid.replaceChildren();
+            els.searchStatus.textContent = "";
+            return;
+          }
+          const matches = allSearchableMaps().filter((item) =>
+            item._haystack.includes(q),
+          );
+          els.searchPanel.hidden = false;
+          els.searchStatus.textContent = `${matches.length} result${
+            matches.length === 1 ? "" : "s"
+          } for "${state.searchQuery.trim()}"`;
+          els.searchEmpty.hidden = matches.length > 0;
+          els.searchGrid.replaceChildren(...matches.map(makeBoxButton));
+        }
+
+        function applyPreviewImage() {
+          if (!state.activeMap) return;
+          const hasDetail = Boolean(state.activeMap.detailSrc);
+          els.viewerLayerSeg.hidden = !hasDetail;
+          if (!hasDetail) state.previewMode = "overview";
+
+          const src =
+            state.previewMode === "detail" && hasDetail
+              ? state.activeMap.detailSrc
+              : resolveOverviewSrc(state.activeMap);
+
+          els.viewerImg.src = src;
+          els.viewerImg.alt = `${mapTitle(state.activeMap)} (${
+            state.previewMode === "detail" ? "Zoomed detail" : "Overview"
+          })`;
+          els.viewerLayerBtns.forEach((btn) => {
+            btn.setAttribute(
+              "aria-pressed",
+              String(btn.dataset.previewMode === state.previewMode),
+            );
+          });
+          els.viewerCanvas.style.setProperty("--zoom", String(state.zoom));
+          els.zoomResetBtn.textContent = `${Math.round(state.zoom * 100)}%`;
+        }
+
+        function setDrawerView(nextState, { animate = false } = {}) {
+          state.drawerState = nextState;
+          const isHidden = nextState === "hidden";
+          const isCollapsed = nextState === "closed";
+
+          document.body.classList.toggle("has-drawer-active", !isHidden);
+          document.body.classList.toggle("has-drawer-collapsed", isCollapsed);
+
+          els.drawer.hidden = isHidden;
+          els.drawerBackdrop.hidden = isHidden || isCollapsed;
+
+          if (animate && !isHidden) {
+            els.drawer.classList.remove("is-entering");
+            void els.drawer.offsetWidth;
+            els.drawer.classList.add("is-entering");
+          }
+
+          els.viewerView.hidden = !(
+            nextState === "opened" || nextState === "closed"
+          );
+          els.viewerBody.hidden = nextState !== "opened";
+          els.viewerToggleBtn.setAttribute(
+            "aria-expanded",
+            String(nextState === "opened"),
+          );
+          els.viewerToggleBtn.setAttribute(
+            "aria-label",
+            nextState === "opened"
+              ? "Collapse map preview"
+              : "Expand map preview",
+          );
+
+          els.freeView.hidden = nextState !== "free-form";
+          els.paidView.hidden = nextState !== "paid-form";
+          els.confirmView.hidden = nextState !== "confirmation";
+
+          if (state.activeMap) {
+            const pillText = mapPillTitle(state.activeMap);
+            els.viewerPill.textContent = pillText;
+            els.freePill.textContent = pillText;
+            els.paidPill.textContent = pillText;
+            els.confirmPill.textContent = pillText;
+          }
+
+          if (nextState === "opened") {
+            applyPreviewImage();
+            els.viewerToggleBtn.focus({ preventScroll: true });
+          } else if (nextState === "free-form") {
+            els.freeHeading.focus({ preventScroll: true });
+          } else if (nextState === "paid-form") {
+            updatePaidPrice();
+            els.paidHeading.focus({ preventScroll: true });
+          } else if (nextState === "confirmation") {
+            els.confirmHeading.focus({ preventScroll: true });
+          }
+        }
+
+        function openDrawerWithMap(item, triggerEl) {
+          state.lastTrigger = triggerEl || document.activeElement;
+          state.activeMap =
+            item.category === "myanmar"
+              ? {
+                  ...CATALOG.myanmarOverview,
+                  overviewSrc: resolveOverviewSrc(CATALOG.myanmarOverview),
+                  detailSrc: null,
+                }
+              : item;
+          state.previewMode = "overview";
+          state.zoom = 1;
+          setDrawerView("opened", { animate: true });
+        }
+
+        function closeDrawer() {
+          setDrawerView("hidden");
+          if (state.lastTrigger && typeof state.lastTrigger.focus === "function") {
+            state.lastTrigger.focus({ preventScroll: true });
+          }
+          state.lastTrigger = null;
+        }
+
+        function updatePaidPrice() {
+          const prodOpt = els.paidProduct.selectedOptions[0];
+          const sizeOpt = els.paidSize.selectedOptions[0];
+          const prodSelected = Boolean(els.paidProduct.value);
+          const sizeSelected = Boolean(els.paidSize.value);
+          if (!prodSelected && !sizeSelected) {
+            els.paidPriceValue.textContent = "0MMK";
+            return 0;
+          }
+          const prodPrice = Number(prodOpt?.dataset.price || 0);
+          const sizePrice = Number(sizeOpt?.dataset.price || 0);
+          const total = prodPrice + sizePrice;
+          els.paidPriceValue.textContent = `${total.toLocaleString("en-US")}MMK`;
+          return total;
+        }
+
+        // Interaction-deferred validation & ARIA sync (validate-input-after-interaction)
+        const announcer = document.createElement("div");
+        announcer.setAttribute("aria-live", "polite");
+        announcer.classList.add("sr-only");
+        document.body.append(announcer);
+        let announceTimer;
+        let announcedField;
+
+        const linkError = (el, shown) => {
+          const errorId = el.dataset.error;
+          if (!errorId) return;
+          const ids = (el.getAttribute("aria-describedby") || "")
+            .split(/\s+/)
+            .filter((id) => id && id !== errorId);
+          if (shown) ids.push(errorId);
+          if (ids.length) el.setAttribute("aria-describedby", ids.join(" "));
+          else el.removeAttribute("aria-describedby");
+        };
+
+        const announceError = (el) => {
+          const error = document.getElementById(el.dataset.error);
+          if (!error) return;
+          const label = el.labels?.[0]
+            ? `${el.labels[0].textContent.replace("*", "").trim()}: `
+            : "";
+          clearTimeout(announceTimer);
+          announcer.textContent = "";
+          announcedField = el;
+          announceTimer = setTimeout(() => {
+            announcer.textContent = label + error.textContent.trim();
+          }, 400);
+        };
+
+        const flagged = new WeakSet();
+        const announced = new WeakSet();
+        const supportsUserInvalid = CSS.supports("selector(:user-invalid)");
+        const dirtyFallback = new WeakMap();
+
+        const syncAria = (el, announce = false) => {
+          if (!el.matches?.("input, select, textarea")) return;
+          const invalid = supportsUserInvalid
+            ? el.matches(":user-invalid")
+            : Boolean(dirtyFallback.get(el)?.interacted && !el.validity.valid);
+
+          if (!supportsUserInvalid) {
+            el.classList.toggle("user-invalid-fallback", invalid);
+          }
+
+          if (invalid) {
+            if (announce && !announced.has(el)) {
+              announceError(el);
+              announced.add(el);
+            }
+            el.setAttribute("aria-invalid", "true");
+            linkError(el, true);
+            flagged.add(el);
+          } else if (flagged.has(el) || el.getAttribute("aria-invalid") !== "true") {
+            el.setAttribute("aria-invalid", "false");
+            linkError(el, false);
+            flagged.delete(el);
+            announced.delete(el);
+            if (announcedField === el) {
+              clearTimeout(announceTimer);
+              announcer.textContent = "";
+            }
+          }
+        };
+
+        [els.freeForm, els.paidForm].forEach((form) => {
+          form.addEventListener(
+            "blur",
+            (e) => {
+              if (!supportsUserInvalid && e.target.checkValidity) {
+                dirtyFallback.set(e.target, { interacted: true });
+              }
+              syncAria(e.target, true);
+            },
+            true,
+          );
+
+          form.addEventListener("input", (e) => {
+            if (e.target.hasAttribute("aria-invalid")) syncAria(e.target);
+          });
+
+          form.addEventListener(
+            "change",
+            (e) => {
+              if (!supportsUserInvalid && e.target.checkValidity) {
+                dirtyFallback.set(e.target, { interacted: true });
+              }
+              syncAria(e.target, true);
+            },
+            true,
+          );
+
+          form.addEventListener(
+            "invalid",
+            (e) => {
+              if (!supportsUserInvalid) {
+                dirtyFallback.set(e.target, { interacted: true });
+              }
+              announced.add(e.target);
+              syncAria(e.target);
+            },
+            true,
+          );
+
+          form.addEventListener("reset", () => {
+            setTimeout(() => {
+              [...form.elements].forEach((el) => {
+                dirtyFallback.delete(el);
+                el.classList?.remove("user-invalid-fallback");
+                syncAria(el);
+              });
+            });
+          });
+        });
+
+        function handleFormSubmit(form, tier) {
+          form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            if (!form.reportValidity()) {
+              const firstInvalid = form.querySelector(":invalid");
+              firstInvalid?.focus();
+              return;
+            }
+            const mapName = mapPillTitle(state.activeMap);
+            if (tier === "free") {
+              els.confirmSummary.textContent = `Your free download request for ${mapName} has been received.`;
+            } else {
+              const total = updatePaidPrice();
+              els.confirmSummary.textContent = `Your paid download request for ${mapName} (${total.toLocaleString(
+                "en-US",
+              )} MMK) has been received.`;
+            }
+            form.reset();
+            setDrawerView("confirmation");
+          });
+        }
+
+        handleFormSubmit(els.freeForm, "free");
+        handleFormSubmit(els.paidForm, "paid");
+
+        // Event bindings
+        els.mapLangBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.mapLang = btn.dataset.mapLang;
+            renderMyanmarSingle();
+            if (
+              state.activeMap?.category === "myanmar" &&
+              state.drawerState !== "hidden"
+            ) {
+              state.activeMap = {
+                ...CATALOG.myanmarOverview,
+                overviewSrc: resolveOverviewSrc(CATALOG.myanmarOverview),
+                detailSrc: null,
+              };
+              applyPreviewImage();
+            }
+          });
+        });
+
+        els.myanmarCard.addEventListener("click", () => {
+          openDrawerWithMap(CATALOG.myanmarOverview, els.myanmarCard);
+        });
+
+        els.disclosureBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const expanded = btn.getAttribute("aria-expanded") === "true";
+            const panel = document.getElementById(
+              btn.getAttribute("aria-controls"),
+            );
+            btn.setAttribute("aria-expanded", String(!expanded));
+            if (panel) panel.hidden = expanded;
+          });
+        });
+
+        els.srTabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            state.srTab = tab.dataset.srTab;
+            renderStateRegional();
+          });
+        });
+
+        els.localTabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            state.localTab = tab.dataset.localTab;
+            state.localPage = 1;
+            renderLocalMaps();
+          });
+        });
+
+        els.regionFilter.addEventListener("change", () => {
+          state.regionFilter = els.regionFilter.value;
+          state.localPage = 1;
+          renderLocalMaps();
+        });
+
+        els.searchInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            if (event.isComposing || event.keyCode === 229) return;
+            event.preventDefault();
+            state.searchQuery = els.searchInput.value;
+            renderSearchResults();
+          }
+        });
+
+        els.searchForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          state.searchQuery = els.searchInput.value;
+          renderSearchResults();
+        });
+
+        els.searchInput.addEventListener("input", () => {
+          state.searchQuery = els.searchInput.value;
+          renderSearchResults();
+        });
+
+        els.searchClearBtn.addEventListener("click", () => {
+          els.searchInput.value = "";
+          state.searchQuery = "";
+          renderSearchResults();
+          els.searchInput.focus();
+        });
+
+        els.viewerToggleBtn.addEventListener("click", () => {
+          setDrawerView(state.drawerState === "opened" ? "closed" : "opened");
+        });
+
+        els.viewerCloseBtn.addEventListener("click", closeDrawer);
+        els.drawerBackdrop.addEventListener("click", closeDrawer);
+        document
+          .querySelectorAll(".js-close-drawer")
+          .forEach((btn) => btn.addEventListener("click", closeDrawer));
+        els.confirmDoneBtn.addEventListener("click", closeDrawer);
+
+        document.querySelectorAll(".js-back-to-preview").forEach((btn) => {
+          btn.addEventListener("click", () => setDrawerView("opened"));
+        });
+
+        els.openFreeBtn.addEventListener("click", () =>
+          setDrawerView("free-form"),
+        );
+        els.openPaidBtn.addEventListener("click", () =>
+          setDrawerView("paid-form"),
+        );
+
+        els.viewerLayerBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.previewMode = btn.dataset.previewMode;
+            state.zoom = 1;
+            applyPreviewImage();
+          });
+        });
+
+        els.zoomInBtn.addEventListener("click", () => {
+          state.zoom = Math.min(3, +(state.zoom + 0.5).toFixed(2));
+          applyPreviewImage();
+        });
+        els.zoomOutBtn.addEventListener("click", () => {
+          state.zoom = Math.max(1, +(state.zoom - 0.5).toFixed(2));
+          applyPreviewImage();
+        });
+        els.zoomResetBtn.addEventListener("click", () => {
+          state.zoom = 1;
+          applyPreviewImage();
+        });
+
+        els.paidProduct.addEventListener("change", updatePaidPrice);
+        els.paidSize.addEventListener("change", updatePaidPrice);
+
+        document.addEventListener("keydown", (event) => {
+          if (
+            event.key === "Escape" &&
+            state.drawerState !== "hidden" &&
+            state.drawerState !== "closed"
+          ) {
+            closeDrawer();
+          }
+        });
+
+        window.addEventListener("dps:uilangchange", (event) => {
+          state.uiLang = event.detail.lang === "my" ? "my" : "en";
+          renderPopular();
+          renderStateRegional();
+          populateRegionFilter();
+          renderLocalMaps();
+          renderSearchResults();
+        });
+
+        // Initial render
+        renderPopular();
+        renderMyanmarSingle();
+        renderStateRegional();
+        populateRegionFilter();
+        renderLocalMaps();
+      })();
     </script>
   </body>
 </html>
